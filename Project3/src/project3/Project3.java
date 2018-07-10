@@ -42,53 +42,15 @@ public class Project3 extends JFrame implements ActionListener {
   public Project3 ()
   {
         myFrame = this;                 // need a static variable reference to a JFrame object
-        setDefaultCloseOperation(myFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(myFrame.DISPOSE_ON_CLOSE);  
         
-        northPanel = new JPanel();
-        northPanel.setLayout(new BorderLayout());
-//        northPanel.setBackground(Color.white);
-        header = new JLabel("Welcome to Blackjack!");
-        header.setFont(new Font("Verdana",1,20));
-        northPanel.add(header, "North");
-        playButton = new JButton("PLAY");
-        playButton.addActionListener(this);
-        northPanel.add(playButton, "Center");
-        
-        buttonPanel = new JPanel();
-        
-        newGameButton = new JButton("NEW GAME");
-        newGameButton.addActionListener(this);
-        hitButton = new JButton("HIT");
-        hitButton.addActionListener(this);
-        standButton = new JButton("STAND");
-        standButton.addActionListener(this);
-        northPanel.add(buttonPanel, "South");
-        buttonPanel.add(newGameButton);
-        buttonPanel.add(hitButton);
-        buttonPanel.add(standButton);
-        newGameButton.setVisible(false);
-        hitButton.setVisible(false);
-        standButton.setVisible(false);
+        loadView();
 
-        
-        //og buttons
-//        shuffleButton = new JButton("Shuffle");
-//        northPanel.add(shuffleButton);
-//        shuffleButton.addActionListener(this);
-//        newButton = new JButton("New Deck");
-//        northPanel.add(newButton);
-//        newButton.addActionListener(this);
-//        exitButton = new JButton("Exit");
-//        northPanel.add(exitButton);
-//        exitButton.addActionListener(this);
-        add("North",northPanel);
-        
-        centerPanel = new MyPanel();
-//        centerPanel = new MyPanel();
-        add("Center",centerPanel);
+//        theDeck = new CardList(52);
+//        theDeck.shuffle();
 
-        theDeck = new CardList(52);
-        theDeck.shuffle();
+        Round round = new Round();
+        
         setSize(800,700);
         setLocation(winxpos,winypos);
         
@@ -120,6 +82,39 @@ public class Project3 extends JFrame implements ActionListener {
         gameOn = true;
         repaint();
       }
+  }
+  
+  public void loadView(){
+        header = new JLabel("Welcome to Blackjack!");
+        header.setFont(new Font("Verdana",1,20));
+        playButton = new JButton("PLAY");
+        playButton.addActionListener(this);
+        
+        newGameButton = new JButton("NEW GAME");
+        newGameButton.addActionListener(this);
+        hitButton = new JButton("HIT");
+        hitButton.addActionListener(this);
+        standButton = new JButton("STAND");
+        standButton.addActionListener(this);
+        
+        newGameButton.setVisible(false);
+        hitButton.setVisible(false);
+        standButton.setVisible(false);
+        
+        buttonPanel = new JPanel();
+        buttonPanel.add(newGameButton);
+        buttonPanel.add(hitButton);
+        buttonPanel.add(standButton);
+        
+        northPanel = new JPanel();
+        northPanel.setLayout(new BorderLayout());
+        northPanel.setBackground(Color.white);
+        northPanel.add(header, "North");
+        northPanel.add(playButton, "Center");
+        northPanel.add(buttonPanel, "South");
+        add("North",northPanel); 
+        centerPanel = new MyPanel();
+        add("Center",centerPanel);
   }
 
 
@@ -162,36 +157,23 @@ public class Project3 extends JFrame implements ActionListener {
         //
         if(gameOn==true){
             int xpos = 25, ypos = 25;
-//            if (theDeck == null) return;
+//            
 //            Card current = theDeck.getFirstCard();
-//            while (current!=null) {
-//               Image tempimage = current.getCardImage();
-//               g.drawImage(tempimage, xpos, ypos, this);
-//               // note: tempimage member variable must be set BEFORE paint is called
-//               xpos += 80;
-//               if (xpos > 700) {
-//                  xpos = 25; ypos += 105;
-//               }
-//               current = current.getNextCard();
-//            }
-
-            
-            Card current = theDeck.getFirstCard();
-            Image tempimage = current.getCardImage();
-            g.drawImage(tempimage,xpos,ypos,this);
-            xpos+=80;
-            current = current.getNextCard();
-            tempimage = current.getCardImage();
-            g.drawImage(tempimage,xpos,ypos,this);
-            xpos+=120;
-            
-            Card enemyFaceDown = current.getNextCard();
-            Image faceDown = Project3.load_picture("images/gbCard52.gif");
-            g.drawImage(faceDown,xpos,ypos,this);
-            xpos+=80;
-            current = enemyFaceDown.getNextCard();
-            tempimage = current.getCardImage();
-            g.drawImage(tempimage,xpos,ypos,this);
+//            Image tempimage = current.getCardImage();
+//            g.drawImage(tempimage,xpos,ypos,this);
+//            xpos+=80;
+//            current = current.getNextCard();
+//            tempimage = current.getCardImage();
+//            g.drawImage(tempimage,xpos,ypos,this);
+//            xpos+=120;
+//            
+//            Card enemyFaceDown = current.getNextCard();
+//            Image faceDown = Project3.load_picture("images/gbCard52.gif");
+//            g.drawImage(faceDown,xpos,ypos,this);
+//            xpos+=80;
+//            current = enemyFaceDown.getNextCard();
+//            tempimage = current.getCardImage();
+//            g.drawImage(tempimage,xpos,ypos,this);
             
         } else{
             int xpos = 5, ypos = 25;
@@ -207,27 +189,5 @@ public class Project3 extends JFrame implements ActionListener {
       }
     }
     
-    
-    
-//    class MyPanel extends JPanel {
-//
-//     ////////////    PAINT   ////////////////////////////////
-//      public void paintComponent (Graphics g) {
-//        //
-//        int xpos = 25, ypos = 5;
-//        if (theDeck == null) return;
-//        Card current = theDeck.getFirstCard();
-//        while (current!=null) {
-//           Image tempimage = current.getCardImage();
-//           g.drawImage(tempimage, xpos, ypos, this);
-//           // note: tempimage member variable must be set BEFORE paint is called
-//           xpos += 80;
-//           if (xpos > 700) {
-//              xpos = 25; ypos += 105;
-//           }
-//           current = current.getNextCard();
-//        } //while
-//      }
-//    }
 
 }    

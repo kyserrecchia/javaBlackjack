@@ -5,10 +5,13 @@ import java.awt.Image;
 
 class Card extends Link {
   private Image cardimage;
+  public int rank;
+  public String suit;
 
   public Card (int cardnum) {
     cardimage = Project3.load_picture("images/gbCard" + cardnum + ".gif");
     // code ASSUMES there is an images sub-dir in your project folder
+    
     if (cardimage == null) {
       System.out.println("Error - image failed to load: images/gbCard" + cardnum + ".gif");
       System.exit(-1);

@@ -15,6 +15,26 @@ class CardList {
     numcards = num;   //set numcards in the deck
     for (int i = 0; i < num; i++) {  // load the cards
       Card temp = new Card(i);
+      
+      //assign suit
+      if(i<13){
+         temp.suit = "clubs";
+      }else if(i<26){
+         temp.suit = "diamonds";
+      }else if(i<39){
+         temp.suit = "hearts";
+      }else{
+          temp.suit = "spades";
+      }
+      //assign rank
+      int j = i+1; 
+      int k = j%13;
+      if(k==0 || k>10){
+          k = 10;
+      }
+      temp.rank = k; 
+    
+      
       if (firstcard != null) {
         temp.setNext(firstcard);
       }
@@ -24,6 +44,12 @@ class CardList {
 
   public Card getFirstCard() {
       return firstcard;
+  }
+  
+  public Card drawCard(){
+      Card drawnCard = getFirstCard();
+      deleteCard(0);
+      return drawnCard;
   }
 
   public Card deleteCard(int cardnum) {
