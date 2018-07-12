@@ -30,7 +30,8 @@ public class Project3 extends JFrame implements ActionListener {
   private JPanel northPanel;
   private JPanel buttonPanel;
   private MyPanel centerPanel;
-  private boolean gameOn = false;
+  private Round round;
+  private boolean roundOn, finale;
   private static JFrame myFrame = null;
 
   ////////////              MAIN      ////////////////////////
@@ -41,15 +42,11 @@ public class Project3 extends JFrame implements ActionListener {
   ////////////            CONSTRUCTOR   /////////////////////
   public Project3 ()
   {
+        roundOn = false;
         myFrame = this;                 // need a static variable reference to a JFrame object
         setDefaultCloseOperation(myFrame.DISPOSE_ON_CLOSE);  
-        
+    
         loadView();
-
-//        theDeck = new CardList(52);
-//        theDeck.shuffle();
-
-        Round round = new Round();
         
         setSize(800,700);
         setLocation(winxpos,winypos);
@@ -57,33 +54,6 @@ public class Project3 extends JFrame implements ActionListener {
         setVisible(true);
    }
 
-
-  ////////////   BUTTON CLICKS ///////////////////////////
-  public void actionPerformed(ActionEvent e) {
-
-      if (e.getSource()== exitButton) {
-        dispose(); System.exit(0);
-      }
-       if (e.getSource()== shuffleButton) {
-        theDeck.shuffle();
-        repaint();
-      }
-       if (e.getSource()== newButton) {
-        theDeck = new CardList(52);
-        repaint();
-      }
-       
-       if (e.getSource()== playButton) {
-        header.setText("Blackjack");
-        playButton.setVisible(false);
-        newGameButton.setVisible(true);
-        hitButton.setVisible(true);
-        standButton.setVisible(true);
-        gameOn = true;
-        repaint();
-      }
-  }
-  
   public void loadView(){
         header = new JLabel("Welcome to Blackjack!");
         header.setFont(new Font("Verdana",1,20));
@@ -116,6 +86,61 @@ public class Project3 extends JFrame implements ActionListener {
         centerPanel = new MyPanel();
         add("Center",centerPanel);
   }
+  
+  ////////////   BUTTON CLICKS ///////////////////////////
+  public void actionPerformed(ActionEvent e) {
+
+      if (e.getSource()== exitButton) {
+        dispose(); System.exit(0);
+      }
+       if (e.getSource()== shuffleButton) {
+        theDeck.shuffle();
+        repaint();
+      }
+       if (e.getSource()== newButton) {
+        theDeck = new CardList(52);
+        repaint();
+      }
+       
+       if (e.getSource()== playButton || e.getSource()==newGameButton) {
+        finale = false;
+        round = new Round();
+        header.setText("Blackjack");
+        playButton.setVisible(false);
+        newGameButton.setVisible(true);
+        hitButton.setVisible(true);
+        standButton.setVisible(true);
+        roundOn = true;
+        repaint();
+      }
+       
+       if(e.getSource()==hitButton){  
+         round.playerHand.insertCard(round.theDeck.drawCard());
+         secondTurn();
+       }
+       
+       if(e.getSource()==standButton){
+         finale = true;
+         hitButton.setVisible(false);
+         standButton.setVisible(false);
+         secondTurn();
+       }
+      
+  }
+  
+    public void secondTurn(){
+        int dealerScore = round.dealerScore;
+        if(dealerScore<18){
+            round.dealerHand.insertCard(round.theDeck.drawCard());
+        }
+        round.updateScores();
+        if(round.playerScore>20){
+            finale = true;
+            hitButton.setVisible(false);
+            standButton.setVisible(false);
+        }
+        repaint();
+    }
 
 
 // This routine will load an image into memory
@@ -155,27 +180,56 @@ public class Project3 extends JFrame implements ActionListener {
      ////////////    PAINT   ////////////////////////////////
       public void paintComponent (Graphics g) {
         //
-        if(gameOn==true){
+        if(roundOn==true){
             int xpos = 25, ypos = 25;
-//            
-//            Card current = theDeck.getFirstCard();
-//            Image tempimage = current.getCardImage();
-//            g.drawImage(tempimage,xpos,ypos,this);
-//            xpos+=80;
-//            current = current.getNextCard();
-//            tempimage = current.getCardImage();
-//            g.drawImage(tempimage,xpos,ypos,this);
-//            xpos+=120;
-//            
-//            Card enemyFaceDown = current.getNextCard();
-//            Image faceDown = Project3.load_picture("images/gbCard52.gif");
-//            g.drawImage(faceDown,xpos,ypos,this);
-//            xpos+=80;
-//            current = enemyFaceDown.getNextCard();
-//            tempimage = current.getCardImage();
-//            g.drawImage(tempimage,xpos,ypos,this);
+    //            
+                Card current = round.playerHand.getFirstCard();
+                Image tempimage = current.getCardImage();
+                g.drawImage(tempimage,xpos,ypos,this);
+                xpos+=80;
+                current = current.getNextCard();
+                tempimage = current.getCardImage();
+                g.drawImage(tempimage,xpos,ypos,this);
+                current = current.getNextCard();
+                while(current!=null){
+                    xpos+=80;
+                    tempimage = current.getCardImage();
+                    g.drawImage(tempimage,xpos,ypos,this);
+                    current = current.getNextCard();
+                }
+                xpos+=120;
+
+                Card enemyFaceDown = round.dealerHand.getFirstCard();
+    
+                if(finale!=true){
+                    tempimage = Project3.load_picture("images/gbCard52.gif");
+                }else{
+                    tempimage = enemyFaceDown.getCardImage();
+                }
+                
+                g.drawImage(tempimage,xpos,ypos,this);
+                
+                xpos+=80;
+                current = enemyFaceDown.getNextCard();
+                tempimage = current.getCardImage();
+                g.drawImage(tempimage,xpos,ypos,this);
+                while(current!=null){
+                    tempimage = current.getCardImage();
+                    g.drawImage(tempimage,xpos,ypos,this);
+                    xpos+=80;
+                    current = current.getNextCard();
+                }
+                
+                round.updateScores();
+                if(round.playerScore==21){
+                    hitButton.setVisible(false);
+                    standButton.setVisible(false);
+                }
+                
+                ////////////////////////////
             
         } else{
+            //initial image at start of program
             int xpos = 5, ypos = 25;
     //        Image prebanner = Project3.load_picture("images/banner.jpg");
             final BufferedImage banner = new ImageResizer().scaleImage(790,600,"images/banner.jpg");

@@ -2,11 +2,11 @@
 package project3;
 
 public class Round {
-    private int playerScore;
-    private int dealerScore;
-    private CardList theDeck;
-    private CardList playerHand;
-    private CardList dealerHand;
+    public int playerScore;
+    public int dealerScore;
+    public CardList theDeck;
+    public CardList playerHand;
+    public CardList dealerHand;
     private boolean finalTurn;
     
     public Round() {
@@ -38,8 +38,6 @@ public class Round {
         }
     }
     
-    public static void showCards(){
-        
-    }
+    
     
 }
