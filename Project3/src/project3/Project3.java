@@ -24,7 +24,7 @@ public class Project3 extends JFrame implements ActionListener {
 
   private static int winxpos=0,winypos=0;      // place window here
 
-  private JButton shuffleButton,exitButton, newButton, playButton, newGameButton, hitButton, standButton;
+  private JButton newButton, playButton, newGameButton, hitButton, standButton;
   private JLabel header;
   private CardList theDeck = null;
   private JPanel northPanel;
@@ -90,13 +90,6 @@ public class Project3 extends JFrame implements ActionListener {
   ////////////   BUTTON CLICKS ///////////////////////////
   public void actionPerformed(ActionEvent e) {
 
-      if (e.getSource()== exitButton) {
-        dispose(); System.exit(0);
-      }
-       if (e.getSource()== shuffleButton) {
-        theDeck.shuffle();
-        repaint();
-      }
        if (e.getSource()== newButton) {
         theDeck = new CardList(52);
         repaint();
