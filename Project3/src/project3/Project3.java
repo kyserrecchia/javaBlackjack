@@ -109,31 +109,37 @@ public class Project3 extends JFrame implements ActionListener {
        
        if(e.getSource()==hitButton){  
          round.playerHand.insertCard(round.theDeck.drawCard());
-         secondTurn();
+         nextPlayerTurn();
        }
        
        if(e.getSource()==standButton){
          finale = true;
          hitButton.setVisible(false);
          standButton.setVisible(false);
-         secondTurn();
+         nextPlayerTurn();
        }
       
   }
   
-    public void secondTurn(){
-        int dealerScore = round.dealerScore;
-        if(dealerScore<18){
-            round.dealerHand.insertCard(round.theDeck.drawCard());
-        }
+    public void nextPlayerTurn(){
         round.updateScores();
         if(round.playerScore>20){
             finale = true;
             hitButton.setVisible(false);
             standButton.setVisible(false);
+            nextDealerTurn();
         }
         repaint();
     }
+    
+    public void nextDealerTurn(){
+        round.updateScores();
+        while(round.dealerScore<18){
+            round.dealerHand.insertCard(round.theDeck.drawCard());
+            round.updateScores();
+        }
+    }
+
 
 
 // This routine will load an image into memory
